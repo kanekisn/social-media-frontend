@@ -1,24 +1,31 @@
-<div class = "profile-card">
-  <div class = "avatar-name">
-    <img src = "" alt="avatar" class = "profile-card__avatar">
-    <div class = "profile-card__name">
-      <strong class = "h6">Ты Гусь</strong>
-      <span class="subtitle">AUF</span>
-    </div>
-  </div>
+@if(data) {
+  @for (user of data; track user.id){
+    <div class = "profile-card">
+      <div class = "avatar-name">
+        <img [src] = "user.avatarUrl || 'assets/imgs/default.jpg'" alt="avatar" class = "profile-card__avatar">
+        <div class = "profile-card__name">
+          <strong class = "h6">{{user.firstName || 'Unnamed'}} {{user.lastName || 'Unnamed'}}</strong>
+          <span class="subtitle">{{user.username}}</span>
+        </div>
+      </div>
 
-  <div class = "profile-card__description">
-    fdssssssfeeeeeeeeeeeeeeeeeeeeeeeeee
-  </div>
+      <div class = "profile-card__description">
+        {{user.description || ''}}
+      </div>
 
-  <div class = "profile-card__tags">
-    <div class="skill-tag">Angular</div>
-    <div class="skill-tag">Angular</div>
-    <div class="skill-tag">Angular</div>
-    <div class="skill-tag">Angular</div>
-  </div>
+      <div class = "profile-card__tags">
+        @if(user.stack){
+          @for (stack of user.stack; track stack){
+              <div class="skill-tag">{{stack}}</div>
+          }
+        } @else {
+          <div class="skill-tag">Not specified</div>
+        }
+      </div>
 
-  <div class="profile-card__action-btns">
-    <button class="btn">Подписаться</button>
+      <div class="profile-card__action-btns">
+        <button class="btn">Подписаться</button>
+      </div>
   </div>
-</div>
+  }
+}

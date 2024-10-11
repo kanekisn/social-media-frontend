@@ -1,0 +1,53 @@
+<img
+  ngSrc="/assets/svg/logo-small.svg"
+  priority="priority"
+  alt="logo-small"
+  class="ml16 mb20"
+  height="74" width="61">
+<nav>
+  <ul>
+    @for(item of menuItems; track item){
+      <li class="main-menu-list">
+        <button class="menu-item" [routerLink]="item.link">
+          <svg class="svg-menu-item" [icon]="item.icon"></svg>
+          <span>{{ item.label }}</span>
+        </button>
+      </li>
+    }
+  </ul>
+</nav>
+
+<p class="sub-section medium-text mb20">Подписчики</p>
+
+@if(subs.length){
+  @for (sub of subs; track sub.id){
+    <app-subscriber-card
+      class="mb20"
+      [profile]="sub"
+    ></app-subscriber-card>
+  }
+
+  <div class="mt20 to-subscribers">
+    <a
+      [routerLink]="['/subscribers']"
+      class="to-subscribers-link medium-text"
+    >
+      Все подписчики
+    </a>
+    <svg icon="arrow" class="to-subscribers-icon"></svg>
+  </div>
+}
+
+<footer class="sidebar__footer">
+  @if(me(); as me){
+    @if(me.avatarUrl){
+      <img [src]="me.avatarUrl" [alt]="me.firstName">
+    }@else{
+      <img src="/assets/imgs/default.jpg" alt="default">
+    }
+    <div class="medium-text username-text">{{me.username}}</div>
+    <a [routerLink]="['/settings']" class="settings-btn">
+      <svg icon="settings"></svg>
+    </a>
+  }
+</footer>

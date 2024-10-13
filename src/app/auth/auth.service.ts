@@ -9,27 +9,26 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  http = inject(HttpClient)
-  cookieService = inject(CookieService)
-  router = inject(Router)
+  http = inject(HttpClient);
+  cookieService = inject(CookieService);
+  router = inject(Router);
 
-  accessToken: string | null = null
-  refreshToken: string | null = null
+  accessToken: string | null = null;
+  refreshToken: string | null = null;
+  refreshTokenTimeout: any;
 
   get isAuth() {
-    if(!this.accessToken) {
+    if (!this.accessToken) {
       this.accessToken = this.cookieService.get('accessToken');
       this.refreshToken = this.cookieService.get('refreshToken');
     }
     return !!this.accessToken;
   }
 
-  login(payload: {username : string, password: string}) {
+  login(payload: { username: string; password: string }) {
     return this.http.post<TokenResponse>('http://localhost:8080/api/v1/auth/login', payload).pipe(
-      tap(val => {
-        this.saveTokens(val)
-      })
-    )
+      tap(val => this.saveTokens(val))
+    );
   }
 
   refreshAuthToken() {
@@ -43,17 +42,33 @@ export class AuthService {
   }
 
   logout() {
-    this.cookieService.deleteAll()
+    this.cookieService.deleteAll();
     this.accessToken = null;
     this.refreshToken = null;
-    this.router.navigate(['/login']).then()
+    clearTimeout(this.refreshTokenTimeout);
+    this.router.navigate(['/login']).then();
   }
 
-  saveTokens(val:TokenResponse){
-    this.accessToken = val.accessToken
-    this.refreshToken = val.refreshToken
+  saveTokens(val: TokenResponse) {
+    this.accessToken = val.accessToken;
+    this.refreshToken = val.refreshToken;
 
-    this.cookieService.set('accessToken', this.accessToken)
-    this.cookieService.set('refreshToken', this.refreshToken)
+    this.cookieService.set('accessToken', this.accessToken);
+    this.cookieService.set('refreshToken', this.refreshToken);
+
+    const expiresIn = this.decodeTokenExpiration(val.accessToken) - 60;
+    this.scheduleRefresh(expiresIn * 1000);
+  }
+
+  private decodeTokenExpiration(token: string): number {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp - Math.floor(Date.now() / 1000);
+  }
+
+  private scheduleRefresh(expiresInMs: number) {
+    clearTimeout(this.refreshTokenTimeout);
+    this.refreshTokenTimeout = setTimeout(() => {
+      this.refreshAuthToken().subscribe();
+    }, expiresInMs);
   }
 }

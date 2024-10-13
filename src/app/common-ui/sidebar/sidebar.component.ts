@@ -26,7 +26,7 @@ export class SidebarComponent implements OnInit {
   me = this.profileService.me
 
   ngOnInit() {
-    this.profileService.getSubscribersShortList().subscribe(res => {
+    this.profileService.getSubscribers(-1, 0, 3).subscribe(res => {
       this.subs = res;
     })
 

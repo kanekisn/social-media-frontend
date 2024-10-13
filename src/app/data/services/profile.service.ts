@@ -1,7 +1,8 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {UserInterface} from '../../interfaces/usersList.interface';
-import {map, Observable, shareReplay, tap} from 'rxjs';
+import {map, Observable, tap} from 'rxjs';
+import {Page} from '../../interfaces/page.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +15,32 @@ export class ProfileService {
   me = signal<UserInterface | null>(null)
 
   getAllUsers(): Observable<UserInterface[]> {
-    return this.http.get<UserInterface[]>(`${this.baseApiUrl}users/all`).pipe(
-      shareReplay(1)
-    );
+    return this.http.get<UserInterface[]>(`${this.baseApiUrl}users/all`)
   }
 
   getMe(){
     return this.http.get<UserInterface>(`${this.baseApiUrl}users/me`).pipe(
-      shareReplay(1),
       tap(res => this.me.set(res))
     );
   }
 
-  getSubscribersShortList() {
-    return this.http.get<UserInterface[]>(`${this.baseApiUrl}users/me/followers`).pipe(
-      map(res => res.slice(0, 3)),
-      shareReplay(1)
-    )
+  getAccount(id: string) {
+    return this.http.get<UserInterface>(`${this.baseApiUrl}users/get-user/${id}`)
+  }
+
+  getSubscribers(id: number = -1, page: number = 0, size: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    const getUrl = id === -1 ? 'users/me/followers' : `users/${id}/followers`;
+
+    return this.http.get<Page<UserInterface>>(`${this.baseApiUrl}${getUrl}`, { params }).pipe(
+      map(response => {
+        const embedded = response._embedded || {};
+        const key = Object.keys(embedded)[0] || '';
+        return embedded[key] || [];
+      })
+    );
   }
 }

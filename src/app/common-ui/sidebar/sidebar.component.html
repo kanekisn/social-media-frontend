@@ -19,7 +19,7 @@
 
 <p class="sub-section medium-text mb20">Подписчики</p>
 
-@if(subs.length){
+@if(subs.length > 0){
   @for (sub of subs; track sub.id){
     <app-subscriber-card
       class="mb20"

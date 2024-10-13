@@ -1,1 +1,32 @@
-<p>profile-page works!</p>
+@if(profile$ | async; as profile){
+  <header class="profile-page__header">
+    <app-profile-header
+      [profile]="profile"
+    ></app-profile-header>
+
+    <a class="btn to-settings-btn" [routerLink]="['/settings']">
+      Редактировать
+      <svg icon="settings" class="to-settings-icon"></svg>
+    </a>
+  </header>
+
+  <main class="profile-page__body">
+    <div></div>
+
+    <div>
+      <h3 class="h6 mb16">Подписчики</h3>
+
+      <div class="subscribers-wrapper">
+        @for (sub of subs; track sub.id){
+          <a class="subscriber-avatar__btn" [routerLink]="['/profile', sub.id]">
+            @if(sub.avatarUrl){
+              <img [src]="sub.avatarUrl" [alt]="sub.firstName">
+            }@else{
+              <img src="/assets/imgs/default.jpg" alt="default">
+            }
+          </a>
+        }
+      </div>
+    </div>
+  </main>
+}

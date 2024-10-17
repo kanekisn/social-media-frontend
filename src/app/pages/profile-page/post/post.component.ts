@@ -6,7 +6,8 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {ProfileService} from '../../../data/services/profile.service';
-import {map, of, switchMap} from 'rxjs';
+import {finalize, map, of, switchMap} from 'rxjs';
+import { debounce } from 'lodash';
 import {Comments} from '../../../interfaces/comments.interface';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
@@ -44,12 +45,12 @@ export class PostComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute
   ) {}
 
-  profileService = inject(ProfileService)
-  me$ = toObservable(this.profileService.me)
+  profileService = inject(ProfileService);
+  me$ = toObservable(this.profileService.me);
 
   form = new FormGroup({
     content: new FormControl<string>('', Validators.required)
-  })
+  });
 
   addComment(postId: number) {
     if (this.form.valid && this.form.value.content) {
@@ -74,6 +75,8 @@ export class PostComponent implements OnInit, AfterViewInit {
           this.activeComments[postId] = true;
 
           this.loadComments(postId);
+
+          this.form.reset();
         }
       });
     }
@@ -103,22 +106,24 @@ export class PostComponent implements OnInit, AfterViewInit {
       if (entries[0].isIntersecting && !this.loading) {
         this.loadPosts();
       }
-    });
-
+    }, { threshold: 0.8 });
     this.observer.observe(this.anchor.nativeElement);
   }
 
-  loadPosts() {
+  loadPosts = debounce(() => {
     if (this.loading) return;
 
     this.loading = true;
-    this.postService.getPosts(this.userId, this.page, this.size).subscribe(data => {
+    this.postService.getPosts(this.userId, this.page, this.size).pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe(data => {
       const newPosts = this.extractEmbeddedData<Post>(data, 'postDtoes');
       this.posts = [...this.posts, ...newPosts];
       this.page++;
-      this.loading = false;
     });
-  }
+  }, 300);
 
   loadComments(postId: number) {
     const currentPage = this.commentPages[postId] || 0;
@@ -139,7 +144,6 @@ export class PostComponent implements OnInit, AfterViewInit {
       this.commentPages[postId] = currentPage + 1;
     });
   }
-
 
   toggleComments(postId: number) {
     if (this.activeComments[postId]) {
@@ -163,7 +167,7 @@ export class PostComponent implements OnInit, AfterViewInit {
         post.likesCount++;
 
         this.postService.likePost(postId).subscribe({
-          error: (error) => {
+          error: () => {
             post.likedByCurrentUser = false;
             post.likesCount--;
           }
@@ -173,7 +177,7 @@ export class PostComponent implements OnInit, AfterViewInit {
         post.likesCount--;
 
         this.postService.unlikePost(postId).subscribe({
-          error: (error) => {
+          error: () => {
             post.likedByCurrentUser = true;
             post.likesCount++;
           }

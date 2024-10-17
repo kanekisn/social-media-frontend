@@ -11,12 +11,12 @@
   </header>
 
   <main class="profile-page__body">
-    <div></div>
+    <app-post-feed></app-post-feed>
 
     <div>
       <h3 class="h6 mb16">Подписчики</h3>
 
-      <div class="subscribers-wrapper">
+      <div class="subscribers-wrapper mb32">
         @for (sub of subs; track sub.id){
           <a class="subscriber-avatar__btn" [routerLink]="['/profile', sub.id]">
             @if(sub.avatarUrl){
@@ -26,7 +26,18 @@
             }
           </a>
         }
+        <a class="to-subscribers-search" [routerLink]="['/search']">
+        </a>
       </div>
+
+      <h3 class="h6 mb16">Навыки</h3>
+      <div class="stack-wrapper">
+        @for (skill of profile.stack; track skill){
+          <div class="skill-tag mb32">{{skill}}</div>
+        }
+      </div>
+      <h3 class="h6 mb16">О себе</h3>
+      <p class="medium-text">{{profile.description}}</p>
     </div>
   </main>
 }

@@ -8,6 +8,7 @@ import {AsyncPipe} from '@angular/common';
 import {SvgIconComponent} from '../../common-ui/svg-icon/svg-icon.component';
 import {SubscriberCardComponent} from '../../common-ui/sidebar/subscriber-card/subscriber-card.component';
 import {UserInterface} from '../../interfaces/usersList.interface';
+import {PostFeedComponent} from './post-feed/post-feed.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -17,7 +18,8 @@ import {UserInterface} from '../../interfaces/usersList.interface';
     AsyncPipe,
     SvgIconComponent,
     RouterLink,
-    SubscriberCardComponent
+    SubscriberCardComponent,
+    PostFeedComponent
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss'

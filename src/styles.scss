@@ -19,8 +19,8 @@
 body {
   height: 100dvh;
   font-family: "JetBrains Mono", sans-serif;
-  background: var(--dark-color);
-  background-image: url(/assets/imgs/background.jpg);
+  background: var(--dark-color) url(/assets/imgs/background.jpg) fixed;
+  background-size: cover;
   color: var(--light-color);
 }
 

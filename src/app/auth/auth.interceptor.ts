@@ -1,10 +1,10 @@
 import { HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
-import { catchError, switchMap, throwError } from 'rxjs';
+import {BehaviorSubject, catchError, filter, switchMap, tap, throwError} from 'rxjs';
 import { TokenResponse } from './auth.service.interface';
 
-let isRefreshing = false;
+let isRefreshing$ = new BehaviorSubject<boolean>(false);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -16,7 +16,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (!token) return next(req);
 
-  if (isRefreshing) {
+  if (isRefreshing$.value) {
     return refreshAndProceed(authService, req, next);
   }
 
@@ -31,22 +31,33 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 const refreshAndProceed = (authService: AuthService, req: HttpRequest<any>, next: HttpHandlerFn) => {
-  if (!isRefreshing) {
-    isRefreshing = true;
+  if (!isRefreshing$.value) {
+    isRefreshing$.next(true);
     return authService.refreshAuthToken().pipe(
       switchMap((val: TokenResponse) => {
-        isRefreshing = false;
-        authService.accessToken = val.accessToken;
-        return next(addToken(req, val.accessToken));
+        return next(addToken(req, val.accessToken)).pipe(
+          tap(() => {
+            isRefreshing$.next(false);
+            authService.accessToken = val.accessToken;
+          })
+        );
       }),
       catchError(error => {
-        isRefreshing = false;
+        isRefreshing$.next(false);
         authService.logout();
         return throwError(() => error);
       })
     );
   }
-  return next(addToken(req, authService.accessToken!));
+
+  if (req.url.includes('refresh')) return next(addToken(req, authService.accessToken!));
+
+  return isRefreshing$.pipe(
+    filter(isRefreshing => !isRefreshing),
+    switchMap(res => {
+      return next(addToken(req, authService.accessToken!));
+    })
+  )
 };
 
 const addToken = (req: HttpRequest<any>, token: string) => {

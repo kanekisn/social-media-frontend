@@ -1,0 +1,14 @@
+<form [formGroup]="form"
+      (ngSubmit)="addPost()"
+      class="post-input-container">
+
+  <textarea
+    formControlName="content"
+    type="text"
+    placeholder="Напишите что-нибудь"
+    class="post-input-field"
+  ></textarea>
+
+  <button type="submit" class="post-input-button">➤</button>
+
+</form>

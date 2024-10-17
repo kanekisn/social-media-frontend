@@ -2,30 +2,34 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 24px 200px 24px 24px;
 }
 
 .profile-page__body {
   display: grid;
   grid-gap: 64px;
   grid-template-columns: 1fr 350px;
+  padding: 24px;
 }
 
 .to-settings-btn {
-  width: 190px;
+  width: 174px;
+  height: 44px;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .to-settings-icon {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   color: var(--dark-color)
 }
 
 .subscribers-wrapper {
   display: flex;
+  align-items: center;
   gap: 6px;
 }
 
@@ -38,4 +42,37 @@
     height: 36px;
     border-radius: 50%;
   }
+}
+
+.to-subscribers-search {
+  border-radius: 50%;
+  background: var(--light-color);
+  width: 14px;
+  height: 14px;
+  position: relative;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background: var(--dark-color);
+    left: 50%;
+    top: 50%;
+  }
+
+  &:before {
+    transform: translateY(-50%) translate(-50%);
+  }
+
+  &:after {
+    transform: translateY(-50%) translate(-50%) rotate(90deg);
+  }
+}
+
+.stack-wrapper {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
 }

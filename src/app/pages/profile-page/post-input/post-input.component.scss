@@ -1,0 +1,42 @@
+.post-input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--dark-color);
+  border: 1px solid var(--light-color);
+  margin: 20px 0;
+  width: 850px;
+}
+
+.post-input-field {
+  flex: 1;
+  padding: 20px;
+  border: none;
+  background-color: var(--dark-color);
+  color: white;
+  font-size: 16px;
+  margin-right: 10px;
+  outline: none;
+  overflow: hidden;
+  resize: none;
+}
+
+.post-input-field::placeholder {
+  color: gray;
+}
+
+.post-input-button {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  color: var(--dark-color);
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.post-input-button:hover {
+  background-color: #5a29cc;
+}

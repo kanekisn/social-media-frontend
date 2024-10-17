@@ -1,0 +1,168 @@
+body {
+  background: var(--dark-color);
+  color: white;
+}
+
+.post {
+  background-color: var(--dark-color);
+  border: 1px solid var(--light-color);
+  padding: 20px;
+  width: 850px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.post-header {
+  display: grid;
+  grid-template-columns: 0.9fr 10.5fr 0fr;
+}
+
+.avatar__author {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.post-user-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  margin-right: 8px;
+}
+
+.post-time {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  padding-top: 3px;
+  color: gray;
+}
+
+.stats-icon {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: auto;
+}
+
+.post-content {
+  padding-left: 64px;
+  margin-bottom: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.post-stats {
+  display: flex;
+  padding-left: 64px;
+  margin: 20px 0;
+}
+
+.stats-left svg {
+  margin-right: 20px;
+}
+
+.comments-section {
+  margin-top: 12px;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding-left: 64px;
+}
+
+.avatar__comments {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.comment__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comment__author {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.comment__text {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.comment-date {
+  margin-top: 2px;
+  font-size: 12px;
+  color: gray;
+}
+
+.comment-input {
+  display: flex;
+  padding-left: 64px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.comment-input textarea {
+  flex: 1;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  outline: none;
+  margin-right: 8px;
+  overflow: hidden;
+  resize: none;
+}
+
+.comment-input button {
+  background-color: var(--primary-color);
+  width: 44px;
+  height: 44px;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--dark-color);
+}
+
+.btn-comments__load-more {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  display: flex;
+  padding-left: 120px;
+  padding-top: 6px;
+}
+
+.stats-icon.active {
+  color: var(--primary-color);
+}
+
+.liked {
+  color: red;
+}

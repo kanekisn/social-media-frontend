@@ -30,7 +30,6 @@ export class LoginPageComponent {
       };
       this.authService.login(loginData).subscribe(val => {
         this.router.navigate(['']).then()
-        console.log(val);
       });
     }
   }

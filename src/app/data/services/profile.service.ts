@@ -43,4 +43,8 @@ export class ProfileService {
       })
     );
   }
+
+  patchUser(profile: Partial<UserInterface>) {
+    return this.http.patch(`${this.baseApiUrl}users/me`, profile)
+  }
 }

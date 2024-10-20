@@ -47,4 +47,10 @@ export class ProfileService {
   patchUser(profile: Partial<UserInterface>) {
     return this.http.patch(`${this.baseApiUrl}users/me`, profile)
   }
+
+  uploadAvatar(file: File) {
+    const fd = new FormData();
+    fd.append('file', file);
+    return this.http.post(`${this.baseApiUrl}users/upload-avatar`, fd)
+  }
 }

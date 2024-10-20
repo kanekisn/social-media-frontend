@@ -1,15 +1,17 @@
-import {Component, effect, inject} from '@angular/core';
+import {Component, effect, inject, ViewChild} from '@angular/core';
 import {ProfileHeaderComponent} from '../../common-ui/profile-header/profile-header.component';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ProfileService} from '../../data/services/profile.service';
 import {firstValueFrom} from 'rxjs';
+import {AvatarUploadComponent} from './avatar-upload/avatar-upload.component';
 
 @Component({
   selector: 'app-settings-page',
   standalone: true,
   imports: [
     ProfileHeaderComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AvatarUploadComponent
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss'
@@ -17,6 +19,8 @@ import {firstValueFrom} from 'rxjs';
 export class SettingsPageComponent {
   fb = inject(FormBuilder);
   profileService = inject(ProfileService);
+
+  @ViewChild(AvatarUploadComponent) avatarUploader!: AvatarUploadComponent;
 
   constructor() {
     effect(() => {
@@ -34,6 +38,10 @@ export class SettingsPageComponent {
     this.form.updateValueAndValidity();
 
     if(this.form.invalid) return;
+
+    if(this.avatarUploader.avatar) {
+      firstValueFrom(this.profileService.uploadAvatar(this.avatarUploader.avatar)).then();
+    }
 
     //@ts-ignore
     firstValueFrom(this.profileService.patchUser({

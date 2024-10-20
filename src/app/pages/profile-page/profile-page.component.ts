@@ -33,13 +33,17 @@ export class ProfilePageComponent {
 
   me$ = toObservable(this.profileService.me)
 
+  showSettings: boolean = false;
+
   profile$ = this.route.params.pipe(
     switchMap(({id}) => {
       if(id === 'me') {
         this.loadSubscribers(-1);
+        this.showSettings = true;
         return this.me$
       }
 
+      this.showSettings = false;
       this.loadSubscribers(Number(id));
       return this.profileService.getAccount(id);
     })

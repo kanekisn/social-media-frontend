@@ -93,6 +93,8 @@ export class PostComponent implements OnInit, AfterViewInit {
       })
     ).subscribe(userId => {
       this.userId = userId;
+      this.posts = [];
+      this.page = 0;
       this.loadPosts();
     });
   }

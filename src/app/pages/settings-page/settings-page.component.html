@@ -1,5 +1,5 @@
 <app-profile-header
-></app-profile-header>
+[profile]="profileService.me()!"></app-profile-header>
 
 <form class="profile-form__wrapper" [formGroup]="form">
   <div class="profile-form">
@@ -22,6 +22,11 @@
       <label class="tt-form-label">
         <span class="tt-form-label__text">About me</span>
         <textarea class="tt-form-input tt-textarea" formControlName="description" rows="4"></textarea>
+      </label>
+
+      <label class="tt-form-label">
+        <span class="tt-form-label__text">Avatar</span>
+        <app-avatar-upload></app-avatar-upload>
       </label>
 
       <label class="tt-form-label">

@@ -4,10 +4,12 @@
       [profile]="profile"
     ></app-profile-header>
 
+    @if(showSettings){
     <a class="btn to-settings-btn" [routerLink]="['/settings']">
       Редактировать
       <svg icon="settings" class="to-settings-icon"></svg>
     </a>
+    }
   </header>
 
   <main class="profile-page__body">

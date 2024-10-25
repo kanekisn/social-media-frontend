@@ -159,6 +159,23 @@ body {
   padding-top: 6px;
 }
 
+.btn-posts__load-more {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .stats-icon.active {
   color: var(--primary-color);
 }

@@ -1,5 +1,22 @@
-<app-profile-header
-[profile]="profileService.me()!"></app-profile-header>
+<div>
+  <app-profile-header
+    class="mb32"
+    [profile]="profileService.me()!">
+  </app-profile-header>
+  <div class="info-line mb32"></div>
+  @if(profileService.me()?.stack?.length){
+    <h3 class="h6 mb16">Навыки</h3>
+    <div class="stack-wrapper mb32">
+      @for(stack of profileService.me()?.stack; track stack){
+        <div class="skill-tag">{{stack}}</div>
+      }
+    </div>
+  }
+  @if(profileService.me()?.description){
+    <h3 class="h6 mb16">О себе</h3>
+    <p class="medium-text">{{ profileService.me()?.description }}</p>
+  }
+</div>
 
 <form class="profile-form__wrapper" [formGroup]="form">
   <div class="profile-form">
@@ -13,6 +30,7 @@
         <span class="tt-form-label__text">Last Name</span>
         <input type="text" class="tt-form-input" formControlName="lastName">
       </label>
+    </div>
 
       <label class="tt-form-label">
         <span class="tt-form-label__text">Username</span>
@@ -33,7 +51,6 @@
         <span class="tt-form-label__text">Stack</span>
         <input type="text" class="tt-form-input" formControlName="stack">
       </label>
-    </div>
   </div>
 
   <div>

@@ -25,20 +25,18 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
   styleUrl: './post.component.scss'
 })
 
-export class PostComponent implements OnInit, AfterViewInit {
+export class PostComponent implements OnInit {
   posts: Post[] = [];
   userId!: number;
   page: number = 0;
   size: number = 4;
   loading: boolean = false;
+  totalPosts: number = 0; // Добавляем общее количество постов
 
   commentPages: { [postId: number]: number } = {};
   comments: { [postId: number]: Comments[] } = {};
   totalComments: { [postId: number]: number } = {};
   activeComments: { [key: number]: boolean } = {};
-
-  @ViewChild('anchor', { static: false }) anchor!: ElementRef<HTMLElement>;
-  private observer!: IntersectionObserver;
 
   constructor(
     private postService: PostService,
@@ -51,6 +49,43 @@ export class PostComponent implements OnInit, AfterViewInit {
   form = new FormGroup({
     content: new FormControl<string>('', Validators.required)
   });
+
+  ngOnInit() {
+    this.route.params.pipe(
+      switchMap(params => {
+        let id = params['id'];
+        if (id === 'me') {
+          return this.me$.pipe(map(res => res!.id));
+        }
+        return of(Number(id));
+      })
+    ).subscribe(userId => {
+      this.userId = userId;
+      this.posts = [];
+      this.page = 0;
+      this.loadPosts(); // Загружаем первые посты
+    });
+  }
+
+  loadPosts() {
+    if (this.loading) return;
+
+    this.loading = true;
+    this.postService.getPosts(this.userId, this.page, this.size).pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe(data => {
+      const newPosts = this.extractEmbeddedData<Post>(data, 'postDtoes');
+      this.posts = [...this.posts, ...newPosts];
+      this.totalPosts = data.page.totalElements; // Обновляем общее количество постов
+      this.page++;
+    });
+  }
+
+  hasMorePosts(): boolean {
+    return this.posts.length < this.totalPosts;
+  }
 
   addComment(postId: number) {
     if (this.form.valid && this.form.value.content) {
@@ -81,51 +116,6 @@ export class PostComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
-  ngOnInit() {
-    this.route.params.pipe(
-      switchMap(params => {
-        let id = params['id'];
-        if (id === 'me') {
-          return this.me$.pipe(map(res => res!.id));
-        }
-        return of(Number(id));
-      })
-    ).subscribe(userId => {
-      this.userId = userId;
-      this.posts = [];
-      this.page = 0;
-      this.loadPosts();
-    });
-  }
-
-  ngAfterViewInit() {
-    this.setupIntersectionObserver();
-  }
-
-  setupIntersectionObserver() {
-    this.observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && !this.loading) {
-        this.loadPosts();
-      }
-    }, { threshold: 0.8 });
-    this.observer.observe(this.anchor.nativeElement);
-  }
-
-  loadPosts = debounce(() => {
-    if (this.loading) return;
-
-    this.loading = true;
-    this.postService.getPosts(this.userId, this.page, this.size).pipe(
-      finalize(() => {
-        this.loading = false;
-      })
-    ).subscribe(data => {
-      const newPosts = this.extractEmbeddedData<Post>(data, 'postDtoes');
-      this.posts = [...this.posts, ...newPosts];
-      this.page++;
-    });
-  }, 300);
 
   loadComments(postId: number) {
     const currentPage = this.commentPages[postId] || 0;

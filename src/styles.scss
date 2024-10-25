@@ -17,6 +17,10 @@
   padding: 0;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 body {
   height: 100dvh;
   font-family: "JetBrains Mono", sans-serif;
@@ -159,4 +163,10 @@ body {
 .tt-textarea {
   height: 84px;
   resize: none;
+}
+
+.stack-wrapper {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
 }

@@ -1,0 +1,18 @@
+.chat-container {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  height: 94vh;
+  width: 100%;
+  border: 1px solid var(--light-color);
+  background-color: var(--dark-color);
+}
+
+.chat-sidebar {
+  border-right: 1px solid var(--light-color);
+  height: 94vh;
+  overflow-y: auto;
+}
+
+.chat-content {
+  width: 100%;
+}

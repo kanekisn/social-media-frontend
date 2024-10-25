@@ -4,6 +4,7 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ProfileService} from '../../data/services/profile.service';
 import {firstValueFrom} from 'rxjs';
 import {AvatarUploadComponent} from './avatar-upload/avatar-upload.component';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-settings-page',
@@ -11,7 +12,8 @@ import {AvatarUploadComponent} from './avatar-upload/avatar-upload.component';
   imports: [
     ProfileHeaderComponent,
     ReactiveFormsModule,
-    AvatarUploadComponent
+    AvatarUploadComponent,
+    RouterLink
   ],
   templateUrl: './settings-page.component.html',
   styleUrl: './settings-page.component.scss'
@@ -68,7 +70,7 @@ export class SettingsPageComponent {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     username: [{value: '', disabled: true}, Validators.required],
-    description: [''],
-    stack: ['']
+    description: ['', Validators.required],
+    stack: ['', Validators.required]
   })
 }

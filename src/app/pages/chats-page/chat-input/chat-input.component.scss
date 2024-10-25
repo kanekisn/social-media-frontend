@@ -1,0 +1,35 @@
+.input-container {
+  border: 1px solid var(--light-color);
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+.input-message {
+  padding: 16px 16px;
+  display: flex;
+  flex-direction: row;
+}
+
+.user-avatar {
+  margin-right: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.input-field {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--light-color);
+  margin-left: 12px;
+  width: 100%;
+}
+
+.btn-send-message {
+  background-color: var(--primary-color);
+  cursor: pointer;
+  border: none;
+  width: 44px;
+  height: 44px;
+}

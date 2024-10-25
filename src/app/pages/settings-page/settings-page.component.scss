@@ -20,6 +20,11 @@
   grid-gap: 20px;
 }
 
+.info-line {
+  border-bottom: 1px dashed var(--gray-color);
+  padding-bottom: 10px;
+}
+
 .two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;

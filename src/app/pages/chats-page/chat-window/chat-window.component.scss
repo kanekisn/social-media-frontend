@@ -1,0 +1,96 @@
+.chat-window__header {
+  display: flex;
+  justify-content: center;
+  padding: 26px 16px;
+  border-bottom: 1px solid var(--light-color);
+}
+
+.chat-window__avatar {
+  border-radius: 50%;
+  margin-right: 12px;
+  width: 32px;
+  height: 32px;
+}
+
+.chat-window__username {
+  padding-top: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--light-color);
+}
+
+.chat-window__body {
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column-reverse;
+  height: 75vh;
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.owner__info, .friend__info {
+  display: flex;
+  align-items: center;
+}
+
+.owner__info {
+  flex-direction: row-reverse;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.date {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.owner__username {
+  margin-right: 12px;
+}
+
+.friend__username {
+  margin-left: 12px;
+}
+
+.owner__date {
+  margin-right: 4px;
+}
+
+.friend__date {
+  margin-left: 4px;
+}
+
+.message {
+  margin-bottom: 15px;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  width: fit-content;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.owner__content {
+  background-color: var(--primary-color);
+  color: var(--dark-color);
+  margin-left: auto;
+  margin-right: 56px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0% 100%);
+}
+
+.friend__content {
+  background-color: #404040;
+  color: var(--light-color);
+  margin-left: 56px;
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+}

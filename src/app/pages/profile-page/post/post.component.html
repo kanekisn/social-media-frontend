@@ -14,35 +14,29 @@
 
   <div class="post-stats">
     <div class="stats-left">
-      {{post.commentsCount}} <svg (click)="toggleComments(post.id)"
-           [class.active]="activeComments[post.id]" class="stats-icon" icon="comments"></svg>
+      {{post.commentsCount}} <svg (click)="toggleComments(post.id)" [class.active]="activeComments[post.id]" class="stats-icon" icon="comments"></svg>
       {{post.likesCount}} <svg (click)="likePost(post.id)" [class.liked]="post.likedByCurrentUser" class="stats-icon" icon="likes"></svg>
     </div>
   </div>
 
   <div *ngIf="comments[post.id] && activeComments[post.id]" class="comments-section">
     <div *ngFor="let com of comments[post.id] || []" class="comment">
-      <img
-        [src]="com.author.avatarUrl || '/assets/imgs/default.jpg'"
-        alt="avatar"
-        class="avatar__comments"
-      />
+      <img [src]="com.author.avatarUrl || '/assets/imgs/default.jpg'" alt="avatar" class="avatar__comments" />
       <div class="comment__content">
         <span class="comment__author">{{com.author.firstName}} {{com.author.lastName}}</span>
-        <p class="comment__text">
-          {{ com.content }}
-        </p>
+        <p class="comment__text">{{ com.content }}</p>
         <span class="comment-date">{{com.createdAt | date}}</span>
       </div>
     </div>
     <button *ngIf="hasMoreComments(post.id)" class="btn-comments__load-more" (click)="loadComments(post.id)">Загрузить еще...</button>
   </div>
-  <form
-    [formGroup]="form"
-    (ngSubmit)="addComment(post.id)"
-    class="comment-input">
+
+  <form [formGroup]="form" (ngSubmit)="addComment(post.id)" class="comment-input">
     <textarea type="text" formControlName="content" placeholder="Напишите комментарий"></textarea>
     <button type="submit">➤</button>
   </form>
 </div>
-<div #anchor></div>
+
+<div *ngIf="hasMorePosts()" class="load-more-container">
+  <button class="btn-posts__load-more" (click)="loadPosts()">Загрузить еще</button>
+</div>

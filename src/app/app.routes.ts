@@ -5,12 +5,14 @@ import {ProfilePageComponent} from './pages/profile-page/profile-page.component'
 import {LayoutComponent} from './common-ui/layout/layout.component';
 import {canActivateAuth} from './auth/access.guard';
 import {SettingsPageComponent} from './pages/settings-page/settings-page.component';
+import {ChatsPageComponent} from './pages/chats-page/chats-page.component';
 
 export const routes: Routes = [
   {path: '', component: LayoutComponent, children: [
       {path: 'search', component: SearchPageComponent},
       {path: 'profile/:id', component: ProfilePageComponent},
       {path: 'settings', component: SettingsPageComponent},
+      {path: 'chats', component: ChatsPageComponent},
       {path: '', component: SearchPageComponent},
     ], canActivate: [canActivateAuth]},
   {path: 'login', component: LoginPageComponent},

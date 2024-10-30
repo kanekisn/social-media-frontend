@@ -25,6 +25,11 @@
 
 .chat-section {
   padding: 24px 20px;
+  cursor: pointer;
+}
+
+.chat-section:hover {
+  background-color: var(--primary-color);
 }
 
 .chat-header {
@@ -64,5 +69,21 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
+  color: var(--light-color);
+}
+
+.load-more {
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--primary-color);
+}
+
+.load-more:hover {
   color: var(--light-color);
 }

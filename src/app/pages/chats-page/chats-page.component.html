@@ -1,7 +1,6 @@
 <div class="chat-container">
-  <app-chat-list class="chat-sidebar"></app-chat-list>
+  <app-chat-list (chatSelected)="onChatSelected($event)" class="chat-sidebar"></app-chat-list>
   <div class="chat-content">
-    <app-chat-window></app-chat-window>
-    <app-chat-input></app-chat-input>
+    <app-chat-window #chatWindow></app-chat-window>
   </div>
 </div>

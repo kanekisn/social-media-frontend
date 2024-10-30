@@ -1,7 +1,9 @@
 <div class="input-container">
-  <div class="input-message">
-    <img class="user-avatar" src="/assets/imgs/default.jpg" alt="">
-    <input type="text" placeholder="Напишите что-нибудь..." class="input-field">
-    <button class="btn-send-message">➤</button>
-  </div>
+  <form [formGroup]="chatForm" (ngSubmit)="sendMessage()">
+    <div class="input-message">
+      <img class="user-avatar" src="/assets/imgs/default.jpg" alt="">
+      <input type="text" formControlName="message" placeholder="Напишите что-нибудь..." class="input-field">
+      <button type="submit" class="btn-send-message">➤</button>
+    </div>
+  </form>
 </div>

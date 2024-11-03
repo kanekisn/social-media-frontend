@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {SvgIconComponent} from '../svg-icon/svg-icon.component';
 import {SubscriberCardComponent} from './subscriber-card/subscriber-card.component';
-import {RouterLink} from '@angular/router';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 import {ProfileService} from '../../data/services/profile.service';
 import {UserInterface} from '../../interfaces/usersList.interface';
 import {firstValueFrom} from 'rxjs';
@@ -14,7 +14,8 @@ import {firstValueFrom} from 'rxjs';
     NgOptimizedImage,
     SvgIconComponent,
     SubscriberCardComponent,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'

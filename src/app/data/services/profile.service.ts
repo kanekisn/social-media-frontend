@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {UserInterface} from '../../interfaces/usersList.interface';
-import {map, Observable, tap} from 'rxjs';
+import {map, tap} from 'rxjs';
 import {Page} from '../../interfaces/page.interface';
 
 @Injectable({
@@ -13,10 +13,7 @@ export class ProfileService {
   baseApiUrl = 'http://localhost:8080/api/v1/'
 
   me = signal<UserInterface | null>(null)
-
-  getAllUsers(): Observable<UserInterface[]> {
-    return this.http.get<UserInterface[]>(`${this.baseApiUrl}users/all`)
-  }
+  filteredProfiles = signal<UserInterface[]>([])
 
   getMe(){
     return this.http.get<UserInterface>(`${this.baseApiUrl}users/me`).pipe(
@@ -52,5 +49,15 @@ export class ProfileService {
     const fd = new FormData();
     fd.append('file', file);
     return this.http.post(`${this.baseApiUrl}users/upload-avatar`, fd)
+  }
+
+  filterProfiles(params: Record<string, any>, page: number = 0, size: number = 10) {
+    return this.http.post<Page<UserInterface>>(
+      `${this.baseApiUrl}users/search?page=${page}&size=${size}`,
+      {
+        username: params["username"] || "",
+        stack: params["stack"] || ""
+      }
+    ).pipe(tap(response => this.filteredProfiles.set(response._embedded ? response._embedded['userDtoes'] : [])));
   }
 }

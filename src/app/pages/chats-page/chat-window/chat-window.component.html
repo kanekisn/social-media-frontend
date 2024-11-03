@@ -1,9 +1,13 @@
 <div class="chat-window__header">
   <img class="chat-window__avatar" src="/assets/imgs/default.jpg" alt="">
-  <span class="chat-window__username">{{ chatParticipant?.username }}</span>
+  <span class="chat-window__username">{{ chatParticipant.username }}</span>
 </div>
 
-<div class="chat-window__body" (scroll)="onScroll($event)">
+<div class="chat-window__body" infiniteScroll
+                               [infiniteScrollDistance]="1"
+                               [infiniteScrollThrottle]="150"
+                               [scrollWindow]="false"
+                               (scrolledUp)="onScroll()">
 
   <div class="message" *ngFor="let message of messages">
     <div [ngClass]="{'owner__info': message.senderId == currentUser!.id, 'friend__info': message.senderId != currentUser!.id}">

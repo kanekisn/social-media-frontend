@@ -6,6 +6,8 @@ import {WebSocketService} from '../../../data/services/websocket.service';
 import {Chat, Participants} from '../../../interfaces/chat.interface';
 import {Message} from '../../../interfaces/message.interface';
 import {ProfileService} from '../../../data/services/profile.service';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import {delay} from 'rxjs';
 
 @Component({
   selector: 'app-chat-window',
@@ -15,7 +17,8 @@ import {ProfileService} from '../../../data/services/profile.service';
     ChatInputComponent,
     NgForOf,
     NgIf,
-    DatePipe
+    DatePipe,
+    InfiniteScrollDirective
   ],
   templateUrl: './chat-window.component.html',
   styleUrl: './chat-window.component.scss'
@@ -66,24 +69,25 @@ export class ChatWindowComponent {
     if (!this.chat || this.loading) return;
 
     this.loading = true;
+    const chatBody = document.querySelector('.chat-window__body') as HTMLElement;
+    const previousScrollHeight = chatBody?.scrollHeight || 0;
 
-    const previousScrollHeight = document.querySelector('.chat-window__body')?.scrollHeight || 0;
+    this.chatService.getChatMessages(this.chat.id, this.currentPage, 10)
+      .pipe(delay(400))
+      .subscribe((data) => {
+        const newMessages = data._embedded ? data._embedded['messageDtoes'] : [];
+        this.messages = [...this.messages, ...newMessages];
+        this.currentPage++;
+        this.loading = false;
 
-    this.chatService.getChatMessages(this.chat.id, this.currentPage, 10).subscribe((data) => {
-      const newMessages = data._embedded ? data._embedded['messageDtoes'] : [];
-      this.messages = [...this.messages, ...newMessages];
-      this.currentPage++;
-      this.loading = false;
-
-      setTimeout(() => {
-        const chatBody = document.querySelector('.chat-window__body') as HTMLElement;
-        chatBody.scrollTop = chatBody.scrollHeight - previousScrollHeight;
-      }, 10);
-    });
+        setTimeout(() => {
+          chatBody.scrollTop = chatBody.scrollHeight - previousScrollHeight;
+        }, 10);
+      });
   }
 
-  onScroll(event: any) {
-    if (event.target.scrollTop === -2 && !this.loading) {
+  onScroll() {
+    if (!this.loading) {
       this.loadMessages();
     }
   }

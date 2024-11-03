@@ -23,6 +23,8 @@
 .chat-window__body {
   display: flex;
   overflow-y: auto;
+  will-change: scroll-position;
+  scroll-behavior: smooth;
   flex-direction: column-reverse;
   height: 75vh;
   padding: 16px 20px;

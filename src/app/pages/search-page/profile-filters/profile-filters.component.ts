@@ -1,9 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {AvatarUploadComponent} from '../../settings-page/avatar-upload/avatar-upload.component';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {ProfileService} from '../../../data/services/profile.service';
 import {debounceTime, startWith, switchMap} from 'rxjs';
-import {startsWith} from 'lodash';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({

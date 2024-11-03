@@ -7,7 +7,7 @@ import {Observable, Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class WebSocketService {
-  private stompClient: Client;
+  private readonly stompClient: Client;
 
   constructor() {
     this.stompClient = new Client({
